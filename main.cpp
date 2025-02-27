@@ -1,9 +1,34 @@
+#include <boost/asio.hpp>
 #include <iostream>
 #include <string>
+#include <system_error>
 
 void server()
 {
-    // TODO
+    using namespace boost::asio;
+
+    io_context ctx;
+
+    const ip::udp::endpoint server_endpoint(
+        ip::address::from_string("127.0.0.1"), 8000);
+    ip::udp::socket server_socket(ctx, server_endpoint);
+
+    char data[256];
+    server_socket.async_receive(
+        buffer(data),
+        [&data](std::error_code ec, std::size_t bytes)
+        {
+            if (ec || bytes == 0)
+            {
+                std::cout << "[server] error while receiving data" << std::endl;
+                return;
+            }
+
+            std::cout << "[server] received " << bytes << "bytes, [" << data
+                      << "]" << std::endl;
+        });
+
+    ctx.run();
 }
 
 void client()

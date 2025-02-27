@@ -1,11 +1,10 @@
 BOOST_LIB = /usr/local/lib
-BOOST_INC = /usr/local/include/boost
 
-CXXFLAGS = -std=c++23 -Wall -Wextra -Werror
+CXXFLAGS = -std=c++23 -Wall -Wextra -Werror -I/usr/local/include
 LDFLAGS = -L$(BOOST_LIB) -lboost_system -pthread
 
 asio: main.cpp
-	$(CXX) $(CXXFLAGS) -I$(BOOST_INC) main.cpp -o asio $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) main.cpp -o asio $(LDFLAGS)
 
 clean:
 	rm -f asio
