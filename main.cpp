@@ -8,11 +8,15 @@ const boost::asio::ip::udp::endpoint
 
 void server()
 {
+    std::cout << "[server] starting" << std::endl;
+
     using namespace boost::asio;
 
     io_context ctx;
 
     ip::udp::socket server_socket(ctx, SERVER_ENDPOINT);
+
+    std::cout << "[server] created socket" << std::endl;
 
     char data[256];
     server_socket.async_receive(
@@ -29,17 +33,23 @@ void server()
                       << "]" << std::endl;
         });
 
+    std::cout << "[server] waiting for data" << std::endl;
+
     ctx.run();
 }
 
 void client()
 {
+    std::cout << "[client] starting" << std::endl;
+
     using namespace boost::asio;
 
     io_context ctx;
 
     const ip::udp::endpoint client_endpoint(ip::udp::v4(), 0);
     ip::udp::socket client_socket(ctx, client_endpoint);
+
+    std::cout << "[client] created socket" << std::endl;
 
     std::string msg = "hello from the client!";
 
@@ -55,6 +65,8 @@ void client()
 
             std::cout << "[client] sent " << bytes << "bytes" << std::endl;
         });
+
+    std::cout << "[client] sending data" << std::endl;
 
     ctx.run();
 }
