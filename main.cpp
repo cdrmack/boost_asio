@@ -3,15 +3,16 @@
 #include <string>
 #include <system_error>
 
+const boost::asio::ip::udp::endpoint
+    SERVER_ENDPOINT(boost::asio::ip::address::from_string("127.0.0.1"), 8000);
+
 void server()
 {
     using namespace boost::asio;
 
     io_context ctx;
 
-    const ip::udp::endpoint server_endpoint(
-        ip::address::from_string("127.0.0.1"), 8000);
-    ip::udp::socket server_socket(ctx, server_endpoint);
+    ip::udp::socket server_socket(ctx, SERVER_ENDPOINT);
 
     char data[256];
     server_socket.async_receive(
@@ -33,7 +34,29 @@ void server()
 
 void client()
 {
-    // TODO
+    using namespace boost::asio;
+
+    io_context ctx;
+
+    const ip::udp::endpoint client_endpoint(ip::udp::v4(), 0);
+    ip::udp::socket client_socket(ctx, client_endpoint);
+
+    std::string msg = "hello from the client!";
+
+    client_socket.async_send_to(
+        buffer(msg.data(), msg.length()), SERVER_ENDPOINT,
+        [](std::error_code ec, std::size_t bytes)
+        {
+            if (ec || bytes == 0)
+            {
+                std::cout << "[client] error while sending data" << std::endl;
+                return;
+            }
+
+            std::cout << "[client] sent " << bytes << "bytes" << std::endl;
+        });
+
+    ctx.run();
 }
 
 int main(int argc, char *argv[])
