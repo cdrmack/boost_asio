@@ -10,5 +10,6 @@ int main()
     timer.wait();
 
     std::cout << "Hello, world!" << std::endl;
+
     return 0;
 }
