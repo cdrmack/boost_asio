@@ -3,7 +3,7 @@ BOOST_LIB = /usr/local/lib
 CXXFLAGS = -std=c++23 -Wall -Wextra -Werror -I/usr/local/include
 LDFLAGS = -L$(BOOST_LIB) -lboost_system -pthread
 
-SOURCES = client_server.cpp timer1.cpp timer2.cpp
+SOURCES = client_server.cpp timer1.cpp timer2.cpp timer3.cpp
 TARGETS = $(SOURCES:.cpp=)
 
 all: $(TARGETS)
