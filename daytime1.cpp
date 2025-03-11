@@ -24,7 +24,9 @@ int main(int argc, char *argv[])
             resolver.resolve(argv[1], "daytime");
 
         tcp::socket socket(ctx);
-        // boost::asio::connect(socket, endpoints);
+        boost::asio::connect(socket, endpoints);
+
+        std::cout << "[client] connected" << std::endl;
 
         // TODO
 
