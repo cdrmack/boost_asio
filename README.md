@@ -8,3 +8,10 @@ gmake
 asio server
 asio client
 ```
+
+```sh
+./daytime2
+./daytime1
+./daytime1
+./daytime1
+```

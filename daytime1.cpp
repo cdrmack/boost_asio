@@ -1,5 +1,6 @@
 // synchronous TCP client
 
+#include <array>
 #include <boost/asio.hpp>
 #include <iostream>
 
@@ -28,7 +29,26 @@ int main(int argc, char *argv[])
 
         std::cout << "[client] connected" << std::endl;
 
-        // TODO
+        while (true)
+        {
+            std::array<char, 128> buffer;
+            boost::system::error_code error;
+
+            size_t length =
+                socket.read_some(boost::asio::buffer(buffer), error);
+
+            // this error is returned when server closes the connection
+            if (error == boost::asio::error::eof)
+            {
+                break;
+            }
+            else if (error)
+            {
+                throw boost::system::system_error(error);
+            }
+
+            std::cout.write(buffer.data(), length);
+        }
 
         ctx.run();
     }
